@@ -21,7 +21,7 @@ export default function HomeLoading() {
           </div>
           <Skeleton className="mt-2 h-11 w-36 rounded-full" />
         </div>
-        <Skeleton className="order-1 aspect-[2/3] w-full max-w-60 justify-self-start rounded-2xl lg:order-2 lg:justify-self-end" />
+        <Skeleton className="order-1 aspect-[2/3] w-full justify-self-stretch rounded-3xl sm:max-w-60 sm:justify-self-start lg:order-2 lg:justify-self-end" />
       </div>
       <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6">
         <div className="mb-10 space-y-3">

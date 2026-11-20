@@ -12,22 +12,22 @@ export function TodayHero({ movie }: { movie: MovieSummary }) {
   const blurb = movie.overview.split(". ").slice(0, 1).join(". ");
 
   return (
-    <section className="mx-auto grid w-full max-w-6xl items-end gap-8 px-4 pt-8 pb-2 sm:px-6 lg:grid-cols-[minmax(0,1fr)_240px] lg:pt-12">
-      <div className="order-2 lg:order-1">
-        <p className="text-sm font-medium text-primary">Today&apos;s pull</p>
-        <h1 className="mt-3 max-w-2xl font-heading text-3xl text-balance leading-tight sm:text-5xl line-clamp-2">
+    <section className="mx-auto grid w-full max-w-6xl items-end gap-6 px-4 pt-6 pb-2 sm:gap-8 sm:px-6 sm:pt-8 lg:grid-cols-[minmax(0,1fr)_240px] lg:pt-12">
+      <div className="order-2 space-y-4 lg:order-1 lg:space-y-0">
+        <p className="text-sm font-semibold text-primary">Today&apos;s pull</p>
+        <h1 className="max-w-2xl font-heading text-[1.85rem] text-balance leading-[1.15] sm:mt-3 sm:text-5xl sm:leading-tight line-clamp-2">
           {movie.title}
         </h1>
         {blurb ? (
-          <p className="mt-4 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <p className="max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:mt-4 sm:text-lg">
             {blurb}
           </p>
         ) : null}
-        <p className="mt-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground tabular-nums">
+        <p className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground tabular-nums sm:mt-3">
           <span>{yearOf(movie.releaseDate)}</span>
           <Rating value={movie.voteAverage} />
         </p>
-        <Button asChild size="lg" className="mt-6 w-fit px-6">
+        <Button asChild size="lg" className="mt-2 w-fit px-6 sm:mt-6">
           <TransitionLink
             href={`/movies/${movie.id}`}
             transitionType="nav-forward"
@@ -38,7 +38,7 @@ export function TodayHero({ movie }: { movie: MovieSummary }) {
       </div>
       <PosterFrame
         movieId={movie.id}
-        className="order-1 aspect-[2/3] w-full max-w-60 justify-self-start rounded-2xl border border-border bg-card lg:order-2 lg:justify-self-end"
+        className="order-1 aspect-[2/3] w-full justify-self-stretch rounded-3xl border border-border bg-card shadow-sm sm:max-w-60 sm:justify-self-start lg:order-2 lg:max-w-none lg:justify-self-end"
       >
         {poster ? (
           <Image
@@ -47,7 +47,7 @@ export function TodayHero({ movie }: { movie: MovieSummary }) {
             fill
             priority
             fetchPriority="high"
-            sizes="240px"
+            sizes="(max-width: 640px) 100vw, 240px"
             className="object-cover"
           />
         ) : (
