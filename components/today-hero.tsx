@@ -1,7 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
 
+import { PosterFrame } from "@/components/poster-frame";
 import { Rating } from "@/components/rating";
+import { TransitionLink } from "@/components/transition-link";
 import { Button } from "@/components/ui/button";
 import { tmdbImage } from "@/lib/images";
 import { yearOf, type MovieSummary } from "@/lib/movies";
@@ -27,10 +28,18 @@ export function TodayHero({ movie }: { movie: MovieSummary }) {
           <Rating value={movie.voteAverage} />
         </p>
         <Button asChild size="lg" className="mt-6 w-fit px-6">
-          <Link href={`/movies/${movie.id}`}>See the film</Link>
+          <TransitionLink
+            href={`/movies/${movie.id}`}
+            transitionType="nav-forward"
+          >
+            See the film
+          </TransitionLink>
         </Button>
       </div>
-      <div className="relative order-1 aspect-[2/3] w-full max-w-60 justify-self-start overflow-hidden rounded-2xl border border-border bg-card lg:order-2 lg:justify-self-end">
+      <PosterFrame
+        movieId={movie.id}
+        className="order-1 aspect-[2/3] w-full max-w-60 justify-self-start rounded-2xl border border-border bg-card lg:order-2 lg:justify-self-end"
+      >
         {poster ? (
           <Image
             src={poster}
@@ -46,7 +55,7 @@ export function TodayHero({ movie }: { movie: MovieSummary }) {
             No poster
           </p>
         )}
-      </div>
+      </PosterFrame>
     </section>
   );
 }

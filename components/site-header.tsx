@@ -7,7 +7,10 @@ import { SiteNav } from "@/components/site-nav";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-20 border-b border-border bg-background pt-[env(safe-area-inset-top)]">
+    <header
+      className="sticky top-0 z-20 border-b border-border bg-background pt-[env(safe-area-inset-top)]"
+      style={{ viewTransitionName: "site-header" }}
+    >
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center justify-between gap-6">
           <Link

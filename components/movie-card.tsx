@@ -1,7 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
 
+import { PosterFrame } from "@/components/poster-frame";
 import { Rating } from "@/components/rating";
+import { TransitionLink } from "@/components/transition-link";
 import { WatchlistButton } from "@/components/watchlist-button";
 import { tmdbImage } from "@/lib/images";
 import { yearOf, type MovieSummary } from "@/lib/movies";
@@ -15,8 +16,11 @@ export function MovieCard({ movie, saved }: MovieCardProps) {
   const poster = tmdbImage(movie.posterPath, "poster");
 
   return (
-    <article className="movie-card flex h-full flex-col rounded-2xl border border-border/80 bg-card p-3 shadow-sm">
-      <div className="relative aspect-[2/3] overflow-hidden rounded-xl bg-muted">
+    <article className="movie-card reveal-on-scroll flex h-full flex-col rounded-2xl border border-border/80 bg-card p-3 shadow-sm">
+      <PosterFrame
+        movieId={movie.id}
+        className="aspect-[2/3] rounded-xl"
+      >
         {poster ? (
           <Image
             src={poster}
@@ -30,12 +34,16 @@ export function MovieCard({ movie, saved }: MovieCardProps) {
             No poster
           </p>
         )}
-      </div>
+      </PosterFrame>
       <div className="flex min-h-0 flex-1 flex-col gap-3 px-1 pt-4 pb-1">
         <h3 className="font-heading text-xl leading-tight text-balance">
-          <Link href={`/movies/${movie.id}`} className="card-link">
+          <TransitionLink
+            href={`/movies/${movie.id}`}
+            transitionType="nav-forward"
+            className="card-link"
+          >
             {movie.title}
-          </Link>
+          </TransitionLink>
         </h3>
         {movie.releaseDate || movie.voteAverage > 0 ? (
           <p className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground tabular-nums">
@@ -50,7 +58,7 @@ export function MovieCard({ movie, saved }: MovieCardProps) {
             {movie.overview}
           </p>
         ) : null}
-        <div className="mt-auto pt-3">
+        <div className="relative z-10 mt-auto pt-3">
           <WatchlistButton
             tmdbId={movie.id}
             title={movie.title}

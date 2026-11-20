@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { MovieGrid } from "@/components/movie-grid";
 import { Notice } from "@/components/notice";
+import { PageTransition } from "@/components/page-transition";
 import type { MovieSummary } from "@/lib/movies";
 import { caller } from "@/lib/trpc/server";
 
@@ -23,22 +24,29 @@ export default async function WatchlistPage() {
 
     if (movies.length === 0) {
       return (
-        <Notice
-          title="Your watchlist is empty"
-          body="Save a film from today's board and it will wait here, in this browser."
-          action={{ href: "/", label: "See today's films" }}
-        />
+        <PageTransition>
+          <Notice
+            title="Your watchlist is empty"
+            body="Save a film from today's board and it will wait here, in this browser."
+            action={{ href: "/", label: "See today's films" }}
+          />
+        </PageTransition>
       );
     }
 
     return (
-      <section className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6">
-        <h1 className="font-heading text-4xl text-balance">Watchlist</h1>
-        <p className="mt-3 mb-10 text-muted-foreground">
-          Saved on this browser. Remove a title with Saved.
-        </p>
-        <MovieGrid movies={movies} savedIds={movies.map((movie) => movie.id)} />
-      </section>
+      <PageTransition>
+        <section className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6">
+          <h1 className="font-heading text-4xl text-balance">Watchlist</h1>
+          <p className="mt-3 mb-10 text-muted-foreground">
+            Saved on this browser. Remove a title with Saved.
+          </p>
+          <MovieGrid
+            movies={movies}
+            savedIds={movies.map((movie) => movie.id)}
+          />
+        </section>
+      </PageTransition>
     );
   } catch (error) {
     const message =

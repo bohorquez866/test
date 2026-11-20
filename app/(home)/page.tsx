@@ -1,5 +1,6 @@
 import { MovieGrid } from "@/components/movie-grid";
 import { Notice } from "@/components/notice";
+import { PageTransition } from "@/components/page-transition";
 import { TodayHero } from "@/components/today-hero";
 import { caller } from "@/lib/trpc/server";
 
@@ -24,7 +25,7 @@ export default async function HomePage() {
     }
 
     return (
-      <>
+      <PageTransition>
         <TodayHero movie={lead} />
         <section className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6">
           <h2 className="font-heading text-4xl text-balance">
@@ -36,7 +37,7 @@ export default async function HomePage() {
           </p>
           <MovieGrid movies={rest} savedIds={savedIds} />
         </section>
-      </>
+      </PageTransition>
     );
   } catch (error) {
     const message =

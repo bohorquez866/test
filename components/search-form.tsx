@@ -10,26 +10,38 @@ export function SearchForm({ defaultValue }: { defaultValue?: string }) {
   const value = defaultValue ?? query;
 
   return (
-    <form action="/search" className="flex w-full gap-2 lg:max-w-sm">
-      <label htmlFor="movie-search" className="sr-only">
-        Search movies
-      </label>
-      <Input
-        id="movie-search"
-        name="q"
-        type="search"
-        key={value}
-        defaultValue={value}
-        placeholder="Search titles…"
-        autoComplete="off"
-        required
-        minLength={1}
-        maxLength={80}
-        className="h-11 rounded-full bg-card px-4"
-      />
-      <Button type="submit" size="lg" className="min-w-11 px-5">
-        Search
-      </Button>
-    </form>
+    <search className="w-full lg:max-w-sm">
+      <form
+        action="/search"
+        method="get"
+        role="search"
+        aria-label="Search movies"
+        className="flex w-full gap-2"
+      >
+        <label htmlFor="movie-search" className="sr-only">
+          Search movies
+        </label>
+        <Input
+          id="movie-search"
+          name="q"
+          type="search"
+          key={value}
+          defaultValue={value}
+          placeholder="Search titles…"
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="none"
+          spellCheck={false}
+          enterKeyHint="search"
+          required
+          minLength={1}
+          maxLength={80}
+          className="h-11 rounded-full bg-card px-4 text-base"
+        />
+        <Button type="submit" size="lg" className="min-w-11 px-5">
+          Search
+        </Button>
+      </form>
+    </search>
   );
 }
