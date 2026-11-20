@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { DM_Sans, Fraunces } from "next/font/google";
 
 import { Providers } from "@/components/providers";
@@ -43,6 +44,7 @@ export default function RootLayout({
         <Providers>
           <SiteHeader />
           <main id="main">{children}</main>
+          <Analytics />
         </Providers>
       </body>
     </html>
