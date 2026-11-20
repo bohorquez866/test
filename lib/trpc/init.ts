@@ -1,0 +1,18 @@
+import { initTRPC } from "@trpc/server";
+import superjson from "superjson";
+
+import { readVisitorId } from "@/lib/visitor";
+
+export const createTRPCContext = async () => {
+  return { visitorId: await readVisitorId() };
+};
+
+const t = initTRPC
+  .context<Awaited<ReturnType<typeof createTRPCContext>>>()
+  .create({
+    transformer: superjson,
+  });
+
+export const createTRPCRouter = t.router;
+export const createCallerFactory = t.createCallerFactory;
+export const baseProcedure = t.procedure;
