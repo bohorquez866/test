@@ -166,12 +166,10 @@ export default async function MoviePage({
     );
   } catch (error) {
     if (error instanceof TRPCError && error.code === "NOT_FOUND") notFound();
-    const message =
-      error instanceof Error ? error.message : "This film could not be loaded.";
     return (
       <Notice
         title="Film unavailable"
-        body={message}
+        body="This film could not be loaded. Check your connection and try again."
         action={{ href: "/", label: "Back to today" }}
       />
     );

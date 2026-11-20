@@ -48,15 +48,11 @@ export default async function WatchlistPage() {
         </section>
       </PageTransition>
     );
-  } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : "The watchlist could not be loaded.";
+  } catch {
     return (
       <Notice
         title="Watchlist unavailable"
-        body={message}
+        body="The watchlist could not be loaded. Check your connection and try again."
         action={{ href: "/watchlist", label: "Try again" }}
       />
     );

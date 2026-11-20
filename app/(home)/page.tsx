@@ -39,15 +39,11 @@ export default async function HomePage() {
         </section>
       </PageTransition>
     );
-  } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : "The daily board could not be loaded.";
+  } catch {
     return (
       <Notice
         title="Today's board is unavailable"
-        body={message}
+        body="The daily board could not be loaded. Check your connection and try again."
         action={{ href: "/", label: "Try again" }}
       />
     );

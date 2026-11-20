@@ -4,6 +4,7 @@ import {
   type MovieDetail,
   type MovieSummary,
 } from "@/lib/movies";
+import { enforceIpRateLimit } from "@/lib/rate-limit";
 
 const BASE = "https://api.themoviedb.org/3";
 
@@ -48,6 +49,7 @@ async function tmdb<T>(
 }
 
 export async function trendingMovies(page = 1): Promise<MovieSummary[]> {
+  await enforceIpRateLimit("tmdb-trending", 60);
   const data = await tmdb<{ results: Parameters<typeof toSummary>[0][] }>(
     "/trending/movie/day",
     { page: String(page) },
@@ -56,6 +58,7 @@ export async function trendingMovies(page = 1): Promise<MovieSummary[]> {
 }
 
 export async function movieDetail(id: number): Promise<MovieDetail | null> {
+  await enforceIpRateLimit("tmdb-movie", 60);
   const response = await tmdbRequest(`/movie/${id}`, {
     append_to_response: "credits",
   });
@@ -71,6 +74,7 @@ export async function movieDetail(id: number): Promise<MovieDetail | null> {
 }
 
 export async function searchMovies(query: string): Promise<MovieSummary[]> {
+  await enforceIpRateLimit("tmdb-search", 20);
   const data = await tmdb<{ results: Parameters<typeof toSummary>[0][] }>(
     "/search/movie",
     {

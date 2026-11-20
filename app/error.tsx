@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 
 export default function HomeError({
-  error,
   reset,
 }: {
   error: Error & { digest?: string };
@@ -15,7 +14,7 @@ export default function HomeError({
         Today&apos;s board is unavailable
       </h1>
       <p className="mt-3 text-pretty text-muted-foreground">
-        {error.message || "The film list did not load. Try the request again."}
+        The film list did not load. Try the request again.
       </p>
       <Button type="button" size="lg" onClick={reset} className="mt-6 px-6">
         Try again

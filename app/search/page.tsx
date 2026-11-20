@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { MovieGrid } from "@/components/movie-grid";
 import { Notice } from "@/components/notice";
 import { PageTransition } from "@/components/page-transition";
+import { RateLimitError } from "@/lib/rate-limit";
 import { caller } from "@/lib/trpc/server";
 
 export const dynamic = "force-dynamic";
@@ -54,12 +55,19 @@ export default async function SearchPage({
       </PageTransition>
     );
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Search could not be completed.";
+    if (error instanceof RateLimitError) {
+      return (
+        <Notice
+          title="Slow down"
+          body="Too many searches from this network. Wait a moment and try again."
+          action={{ href: "/search", label: "Try again" }}
+        />
+      );
+    }
     return (
       <Notice
         title="Search unavailable"
-        body={message}
+        body="Search could not be completed. Wait a moment and try again."
         action={{ href: "/search", label: "Try again" }}
       />
     );

@@ -2,15 +2,23 @@ import { cookies } from "next/headers";
 
 export const VISITOR_COOKIE = "marquee_visitor";
 
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export function isVisitorId(value: string | undefined | null): value is string {
+  return Boolean(value && UUID_RE.test(value));
+}
+
 export async function readVisitorId() {
   const store = await cookies();
-  return store.get(VISITOR_COOKIE)?.value ?? null;
+  const value = store.get(VISITOR_COOKIE)?.value;
+  return isVisitorId(value) ? value : null;
 }
 
 export async function ensureVisitorId() {
   const store = await cookies();
   const existing = store.get(VISITOR_COOKIE)?.value;
-  if (existing) return existing;
+  if (isVisitorId(existing)) return existing;
 
   const id = crypto.randomUUID();
   store.set(VISITOR_COOKIE, id, {

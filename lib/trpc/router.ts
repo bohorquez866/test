@@ -3,15 +3,25 @@ import { z } from "zod";
 
 import { prisma } from "@/lib/prisma";
 import { movieDetail, searchMovies, trendingMovies } from "@/lib/tmdb";
-import { baseProcedure, createTRPCRouter } from "@/lib/trpc/init";
+import {
+  createTRPCRouter,
+  mutationProcedure,
+  publicProcedure,
+} from "@/lib/trpc/init";
 import { ensureVisitorId } from "@/lib/visitor";
 
+const tmdbPosterPath = z
+  .string()
+  .regex(/^\/[A-Za-z0-9._/-]+$/, "Invalid poster path")
+  .max(200)
+  .nullable();
+
 export const appRouter = createTRPCRouter({
-  trending: baseProcedure
+  trending: publicProcedure
     .input(z.object({ page: z.number().int().min(1).max(20).default(1) }))
     .query(({ input }) => trendingMovies(input.page)),
 
-  movie: baseProcedure
+  movie: publicProcedure
     .input(z.object({ id: z.number().int().positive() }))
     .query(async ({ input }) => {
       const movie = await movieDetail(input.id);
@@ -24,12 +34,12 @@ export const appRouter = createTRPCRouter({
       return movie;
     }),
 
-  search: baseProcedure
+  search: publicProcedure
     .input(z.object({ query: z.string().trim().min(1).max(80) }))
     .query(({ input }) => searchMovies(input.query)),
 
   watchlist: createTRPCRouter({
-    list: baseProcedure.query(async ({ ctx }) => {
+    list: publicProcedure.query(async ({ ctx }) => {
       if (!ctx.visitorId) return [];
       return prisma.watchlistItem.findMany({
         where: { visitorId: ctx.visitorId },
@@ -37,7 +47,7 @@ export const appRouter = createTRPCRouter({
       });
     }),
 
-    ids: baseProcedure.query(async ({ ctx }) => {
+    ids: publicProcedure.query(async ({ ctx }) => {
       if (!ctx.visitorId) return [] as number[];
       const rows = await prisma.watchlistItem.findMany({
         where: { visitorId: ctx.visitorId },
@@ -46,12 +56,12 @@ export const appRouter = createTRPCRouter({
       return rows.map((row) => row.tmdbId);
     }),
 
-    toggle: baseProcedure
+    toggle: mutationProcedure
       .input(
         z.object({
           tmdbId: z.number().int().positive(),
-          title: z.string().min(1).max(300),
-          posterPath: z.string().nullable(),
+          title: z.string().trim().min(1).max(300),
+          posterPath: tmdbPosterPath,
         }),
       )
       .mutation(async ({ input }) => {
